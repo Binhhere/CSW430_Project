@@ -1,0 +1,20 @@
+{
+  "info": { "name": "CSW430 Etrelay REST API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "accessToken", "value": "paste_a_token_here" },
+    { "key": "customerId", "value": "" }
+  ],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/health" } },
+    { "name": "Register", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"displayName\": \"Course Demo\",\n  \"email\": \"demo@example.com\",\n  \"password\": \"DemoPassword123\"\n}" }, "url": "{{baseUrl}}/api/v1/auth/register" } },
+    { "name": "Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"demo@example.com\",\n  \"password\": \"DemoPassword123\"\n}" }, "url": "{{baseUrl}}/api/v1/auth/login" } },
+    { "name": "Get profile", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/profile" } },
+    { "name": "Update profile", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"displayName\": \"Course Demo Updated\"}" }, "url": "{{baseUrl}}/api/v1/profile" } },
+    { "name": "List customers", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/customers?archiveScope=WORKING" } },
+    { "name": "Create customer", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"name\": \"Athena Events\", \"contactName\": \"Athena\", \"email\": \"athena@example.com\"}" }, "url": "{{baseUrl}}/api/v1/customers" } },
+    { "name": "Customer detail", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/customers/{{customerId}}" } },
+    { "name": "Update customer", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"phone\": \"0900000000\"}" }, "url": "{{baseUrl}}/api/v1/customers/{{customerId}}" } },
+    { "name": "Delete customer", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/customers/{{customerId}}" } }
+  ]
+}

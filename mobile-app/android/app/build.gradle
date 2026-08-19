@@ -1,0 +1,81 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.getrelayav.relayav"
+    compileSdk = 37
+    ndkVersion = "27.0.12077973"
+    // Secrets may be provided by environment variables or by a properties file
+    // outside the repository. The default file location is user-local and is
+    // never checked in.
+    def signingPropertiesPath = System.getenv("RELAY_UPLOAD_PROPERTIES") ?: new File(
+        System.getProperty("user.home"),
+        "RelayAV-secrets/relayav-upload.properties"
+    ).absolutePath
+    def signingProperties = new Properties()
+    def signingPropertiesFile = file(signingPropertiesPath)
+    if (signingPropertiesFile.isFile()) {
+        signingPropertiesFile.withInputStream { stream -> signingProperties.load(stream) }
+    }
+    def uploadStoreFile = System.getenv("RELAY_UPLOAD_STORE_FILE") ?: signingProperties.getProperty("storeFile")
+    def uploadStorePassword = System.getenv("RELAY_UPLOAD_STORE_PASSWORD") ?: signingProperties.getProperty("storePassword")
+    def uploadKeyAlias = System.getenv("RELAY_UPLOAD_KEY_ALIAS") ?: signingProperties.getProperty("keyAlias")
+    def uploadKeyPassword = System.getenv("RELAY_UPLOAD_KEY_PASSWORD") ?: signingProperties.getProperty("keyPassword")
+    def releaseSigningConfigured = [uploadStoreFile, uploadStorePassword, uploadKeyAlias, uploadKeyPassword]
+        .every { value -> value != null && !value.trim().isEmpty() }
+
+    signingConfigs {
+        release {
+            if (releaseSigningConfigured) {
+                storeFile = file(uploadStoreFile)
+                storePassword = uploadStorePassword
+                keyAlias = uploadKeyAlias
+                keyPassword = uploadKeyPassword
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+
+    defaultConfig {
+        applicationId = "com.getrelayav.relayav"
+        minSdkVersion = flutter.minSdkVersion
+        targetSdk = 37
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.release
+        }
+    }
+
+    gradle.taskGraph.whenReady { graph ->
+        def releaseRequested = graph.allTasks.any { task ->
+            task.name.toLowerCase(Locale.ROOT).contains("release")
+        }
+        if (releaseRequested && !releaseSigningConfigured) {
+            throw new RuntimeException(
+                "Release signing is required. Set RELAY_UPLOAD_STORE_FILE, RELAY_UPLOAD_STORE_PASSWORD, " +
+                    "RELAY_UPLOAD_KEY_ALIAS, and RELAY_UPLOAD_KEY_PASSWORD, or provide the external " +
+                    "RelayAV-secrets/relayav-upload.properties file before building a release."
+            )
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}

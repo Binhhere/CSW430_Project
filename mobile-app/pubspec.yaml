@@ -1,0 +1,78 @@
+name: relay_av_demo
+description: "Etrelay: Rental Operations Android application."
+publish_to: "none"
+
+version: 1.0.0+17
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  # UI / navigation / state
+  flutter_riverpod: ^3.3.2
+
+  # Camera / QR / media
+  mobile_scanner: ^7.4.0
+  qr_flutter: ^4.1.0
+  image_picker: ^1.2.3
+  crop_your_image: ^2.0.0
+
+  # Local device / storage
+  file_picker: ^11.0.3
+  shared_preferences: ^2.5.5
+  flutter_secure_storage: ^10.3.1
+  url_launcher: ^6.3.2
+
+  # Local course backend
+  http: ^1.5.0
+
+  # Utilities
+  crypto: ^3.0.7
+  excel_plus: ^2.12.4
+  intl: ^0.20.2
+  uuid: ^4.6.0
+
+  # PDF / printing
+  pdf: ^3.13.0
+  printing: ^5.15.0
+  package_info_plus: ^9.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/brand/google_logo.png
+    - assets/company_entry/
+    - assets/auth_entry/
+
+  fonts:
+    - family: RelaySans
+      fonts:
+        - asset: assets/fonts/relay_sans_regular.ttf
+          weight: 400
+        - asset: assets/fonts/relay_sans_medium.ttf
+          weight: 500
+        - asset: assets/fonts/relay_sans_semibold.ttf
+          weight: 600
+
+    - family: RelayDisplay
+      fonts:
+        - asset: assets/fonts/relay_display_semibold.ttf
+          weight: 600
+
+    - family: RelayMono
+      fonts:
+        - asset: assets/fonts/relay_mono_regular.ttf
+          weight: 400
