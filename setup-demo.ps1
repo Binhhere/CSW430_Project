@@ -215,7 +215,7 @@ if (-not (Test-Path $envPath)) {
     $jwtSecret = [Convert]::ToBase64String($randomBytes).Replace('+', '-').Replace('/', '_').TrimEnd('=')
     @"
 PORT=3000
-DATABASE_URL=postgresql://csw430:csw430_local_password@localhost:5432/csw430_project
+DATABASE_URL=postgresql://csw430:csw430_local_password@localhost:5433/csw430_project
 JWT_SECRET=$jwtSecret
 "@ | Set-Content -LiteralPath $envPath -Encoding utf8
     Write-Ok 'Created backend/.env with a generated local JWT secret'

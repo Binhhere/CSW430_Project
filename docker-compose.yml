@@ -7,9 +7,9 @@ services:
       POSTGRES_USER: csw430
       POSTGRES_PASSWORD: csw430_local_password
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_demo:/var/lib/postgresql/data
       - ./database/database.sql:/docker-entrypoint-initdb.d/01-database.sql:ro
       - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
     healthcheck:
@@ -19,4 +19,4 @@ services:
       retries: 10
 
 volumes:
-  postgres_data:
+  postgres_data_demo:
